@@ -62,9 +62,8 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-  return value.replace(/([А-ЯЁа-яё]+)([А-ЯЁа-яё]+)/, '$2, $1');
+  return value.replace(/(^Hello,\s)|(!)/gi, '');
 }
-console.log(extractNameFromTemplate('Hello, John Doe!'));
 
 /**
  * Returns a first char of the given string.
@@ -76,8 +75,8 @@ console.log(extractNameFromTemplate('Hello, John Doe!'));
  *   'John Doe'  => 'J'
  *   'cat'       => 'c'
  */
-function getFirstChar(/* value */) {
-  throw new Error('Not implemented');
+function getFirstChar(value) {
+  return value[0];
 }
 
 /**
@@ -91,10 +90,9 @@ function getFirstChar(/* value */) {
  *   'cat'              => 'cat'
  *   '\tHello, World! ' => 'Hello, World!'
  */
-function removeLeadingAndTrailingWhitespaces(/* value */) {
-  throw new Error('Not implemented');
+function removeLeadingAndTrailingWhitespaces(value) {
+  return value.trim();
 }
-
 /**
  * Returns a string that repeated the specified number of times.
  *
@@ -106,10 +104,9 @@ function removeLeadingAndTrailingWhitespaces(/* value */) {
  *   'A', 5  => 'AAAAA'
  *   'cat', 3 => 'catcatcat'
  */
-function repeatString(/* value, count */) {
-  throw new Error('Not implemented');
+function repeatString(value, count) {
+  return value.repeat(count);
 }
-
 /**
  * Remove the first occurrence of string inside another string
  *
@@ -122,8 +119,8 @@ function repeatString(/* value, count */) {
  *   'I like legends', 'end' => 'I like legs',
  *   'ABABAB','BA' => 'ABAB'
  */
-function removeFirstOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeFirstOccurrences(str, value) {
+  return str.replace(new RegExp(value), '');
 }
 
 /**
@@ -137,10 +134,9 @@ function removeFirstOccurrences(/* str, value */) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.replace(/<|>/g, '');
 }
-
 /**
  * Converts all characters of the specified string into the upper case
  *
@@ -151,8 +147,8 @@ function unbracketTag(/* str */) {
  *   'Thunderstruck' => 'THUNDERSTRUCK'
  *  'abcdefghijklmnopqrstuvwxyz' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
  */
-function convertToUpperCase(/* str */) {
-  throw new Error('Not implemented');
+function convertToUpperCase(str) {
+  return str.toUpperCase();
 }
 
 /**
@@ -170,10 +166,9 @@ function convertToUpperCase(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
-
 /**
  * Returns the string representation of rectangle with specified width and height
  * using pseudograhic chars
@@ -197,9 +192,25 @@ function extractEmails(/* str */) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+let newStr = ''
+  for (let i=0;i<width*height;i++){
+    if (i==0) newStr+='┌'
+    if (i == width-1)newStr+='┐'
+    if (i == width*height-width+1)newStr+='└'
+    if (i == width*height-1)newStr+='┘'
+    if (i>0 && i<width-1)newStr+='─'
+    if (i<width*height-1 && i>width*height-width)newStr+='─'
+    if (i>width-1 && i<width*height-width && i%width-1==0 )newStr+='│'
+
+
+  }
+
+
+  return newStr
+
 }
+console.log(getRectangleString(12,5));
 
 /**
  * Encode specified string with ROT13 cipher
