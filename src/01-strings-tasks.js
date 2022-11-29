@@ -193,24 +193,26 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-let newStr = ''
-  for (let i=0;i<width*height;i++){
-    if (i==0) newStr+='┌'
-    if (i == width-1)newStr+='┐'
-    if (i == width*height-width+1)newStr+='└'
-    if (i == width*height-1)newStr+='┘'
-    if (i>0 && i<width-1)newStr+='─'
-    if (i<width*height-1 && i>width*height-width)newStr+='─'
-    if (i>width-1 && i<width*height-width && i%width-1==0 )newStr+='│'
-
-
+  let result = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < height; i++) {
+    let str = '';
+    // eslint-disable-next-line no-plusplus
+    for (let j = 0; j < width; j++) {
+      if (i === 0 && j === 0) str += '┌';
+      if ((i === 0 || i === height - 1) && j > 0 && j < width - 1) str += '─';
+      if (i !== 0 && i !== height - 1) {
+        str += j !== 0 && j !== width - 1 ? ' ' : '│';
+        if (j === width - 1) str += '\n';
+      }
+      if (i === 0 && j === width - 1) str += '┐\n';
+      if (i === height - 1 && j === 0) str += '└';
+      if (i === height - 1 && j === width - 1) str += '┘\n';
+    }
+    result += str;
   }
-
-
-  return newStr
-
+  return result;
 }
-console.log(getRectangleString(12,5));
 
 /**
  * Encode specified string with ROT13 cipher
@@ -228,8 +230,18 @@ console.log(getRectangleString(12,5));
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const tab = {
+    input: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    output: 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm',
+  };
+  let result = '';
+  // eslint-disable-next-line no-restricted-syntax
+  for (const i of str) {
+    if (tab.input.indexOf(i) < 0) result = result.concat(i);
+    else result = result.concat(tab.output[tab.input.indexOf(i)]);
+  }
+  return result;
 }
 
 /**
@@ -245,8 +257,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return Object.prototype.toString.call(value) === '[object String]';
 }
 
 /**
@@ -273,8 +285,66 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const arr = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+  let result = null;
+  arr.forEach((el, ind) => {
+    if (el === value) result = ind;
+  });
+  return result;
 }
 
 module.exports = {
