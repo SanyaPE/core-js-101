@@ -482,10 +482,10 @@ function getIdentityMatrix(n) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  // return Array.from({ length: end - start + 1 }, (v, k) => k).map((el) => el + start);
+  return [...new Array(end - start + 1).fill(start)].map((el, ind) => ind + el);
 }
-
 /**
  * Returns array containing only unique values from the specified array.
  *
@@ -497,10 +497,16 @@ function getIntervalArray(/* start, end */) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  const res = [];
+  return arr.filter((el) => {
+    if (!res.includes(el)) {
+      res.push(el);
+      return true;
+    }
+    return false;
+  });
 }
-
 /**
  * Groups elements of the specified array by key.
  * Returns multimap of keys extracted from array elements via keySelector callback
@@ -531,8 +537,17 @@ function distinct(/* arr */) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const temp = array.reduce((acc, curr) => {
+    const key = keySelector(curr);
+    const value = valueSelector(curr);
+    if (!acc[key]) {
+      acc[key] = [];
+      acc[key].push(value);
+    } else acc[key].push(value);
+    return acc;
+  }, {});
+  return new Map(Object.entries(temp));
 }
 
 /**
@@ -548,8 +563,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.map((el) => childrenSelector(el)).flat();
 }
 
 /**
@@ -564,9 +579,11 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((prev, curr) => prev[curr], arr);
 }
+
+// console.log(getElementByIndexes(['one','two','three'], [2]));
 
 /**
  * Swaps the head and tail of the specified array:
@@ -587,8 +604,15 @@ function getElementByIndexes(/* arr, indexes */) {
  *
  */
 function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+  // const cen = Math.floor(arr.length / 2);
+  // return arr.map((el, ind) => {
+  //   if (ind < cen) {
+  //     [arr[ind], arr[ind + cen + 1]] =
+  //       arr.length % 2 ? [arr[ind + cen + 1], arr[ind]] : [arr[ind], arr[ind]];
+  //   }
+  // });
 }
+console.log(swapHeadAndTail([1, 2, 3, 4, 5]));
 
 module.exports = {
   findElement,
