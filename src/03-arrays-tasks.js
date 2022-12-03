@@ -406,6 +406,7 @@ function toStringList(arr) {
  * @return {array}
  *
  * @example
+ // eslint-disable-next-line linebreak-style
  *    [
  *      { country: 'Russia',  city: 'Moscow' },
  *      { country: 'Belarus', city: 'Minsk' },
@@ -603,16 +604,18 @@ function getElementByIndexes(arr, indexes) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  // const cen = Math.floor(arr.length / 2);
-  // return arr.map((el, ind) => {
-  //   if (ind < cen) {
-  //     [arr[ind], arr[ind + cen + 1]] =
-  //       arr.length % 2 ? [arr[ind + cen + 1], arr[ind]] : [arr[ind], arr[ind]];
-  //   }
-  // });
+function swapHeadAndTail(arr) {
+  const cent = Math.floor(arr.length / 2);
+  const left = arr.slice(0, cent);
+  const right = arr.length % 2 ? arr.slice(cent + 1, arr.length) : arr.slice(cent, arr.length);
+  if (arr.length % 2) {
+    arr.splice(cent + 1, arr.length, left);
+  } else {
+    arr.splice(cent, arr.length, left);
+  }
+  arr.splice(0, cent, right);
+  return arr.flat();
 }
-console.log(swapHeadAndTail([1, 2, 3, 4, 5]));
 
 module.exports = {
   findElement,
